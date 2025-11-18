@@ -1,19 +1,19 @@
 from flask import Flask, request, render_template, jsonify, send_from_directory
+from werkzeug.utils import secure_filename
 import os
 import openai
-from werkzeug.utils import secure_filename
 
 # تهيئة Flask
 app = Flask(__name__, template_folder="templates", static_folder="static")
 
 # إعدادات التخزين المؤقت للملفات
-UPLOAD_FOLDER = "/tmp/uploads"  # Vercel يسمح مؤقتًا
+UPLOAD_FOLDER = "/tmp/uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB كحد أقصى
+app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB
 
 # مفتاح OpenAI
-openai.api_key = os.environ.get("OPENAI_API_KEY")  # احرص على إضافته في Environment Variables
+openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 # الصفحة الرئيسية
 @app.route("/", methods=["GET"])
@@ -32,7 +32,18 @@ def upload_file():
     filename = secure_filename(file.filename)
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     file.save(file_path)
-    return jsonify({"message": "File uploaded", "filename": filename})
+    download_url = f"/files/{filename}"
+    
+    return jsonify({
+        "message": "File uploaded successfully",
+        "filename": filename,
+        "download_url": download_url
+    })
+
+# تحميل الملفات بعد رفعها
+@app.route("/files/<filename>", methods=["GET"])
+def get_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
 
 # جلب المحتوى عبر OpenAI
 @app.route("/ai", methods=["POST"])
@@ -53,5 +64,5 @@ def ai_response():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# لتحويل التطبيق ليعمل على Vercel
+# متغير application المطلوب من Vercel
 application = app
