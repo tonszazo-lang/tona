@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>رِقّة النسائية 💖</title>
+<style>
+:root {
+  --primary-color: #c80064;
+  --secondary-color: #ff6fb2;
+  --bg-light: linear-gradient(180deg,#ffe6f2,#fdd8f5,#f3c5f9);
+  --bg-dark: linear-gradient(180deg,#1e1e2f,#2a2a3f,#3a3a57);
+}
+
+body {
+  margin:0;
+  font-family:"Cairo",sans-serif;
+  background: var(--bg-light);
+  color: var(--primary-color);
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+  transition: background 0.4s, color 0.4s;
+}
+body.dark {
+  background: var(--bg-dark);
+  color: #ffb6d1;
+}
+
+header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:rgba(255,255,255,0.7);
+  padding:10px 15px;
+  border-bottom:2px solid #ffb6d1;
+  backdrop-filter:blur(8px);
+  transition: background 0.4s;
+}
+body.dark header {
+  background:rgba(50,50,60,0.8);
+  border-bottom:2px solid #ff6fb2;
+}
+
+header h1 {
+  font-size:1.8em;
+  font-weight:700;
+  margin:0;
+  color: var(--primary-color);
+}
+body.dark header h1 { color:#ffb6d1; }
+
+.admin-btn {
+  font-size:1.8em;
+  cursor:pointer;
+  transition:0.3s transform;
+}
+.admin-btn:hover { transform: scale(1.3); }
+
+#search {
+  margin:10px auto;
+  width:90%;
+  padding:10px 15px;
+  border-radius:30px;
+  border:none;
+  outline:none;
+  box-shadow:0 2px 8px rgba(255,105,180,0.4);
+  transition: box-shadow 0.3s;
+}
+#search:focus { box-shadow:0 4px 12px rgba(255,105,180,0.6); }
+
+main {
+  flex:1;
+  overflow-y:auto;
+  padding:15px;
+  transition: all 0.3s;
+}
+
+footer {
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  background:rgba(255,255,255,0.9);
+  border-top:2px solid #ffc0cb;
+  padding:10px 0;
+  transition: background 0.4s;
+}
+body.dark footer { background:rgba(40,40,50,0.9); border-top:2px solid #ff6fb2; }
+
+footer button {
+  background:none;
+  border:none;
+  font-size:1.5em;
+  cursor:pointer;
+  transition:transform 0.2s, color 0.3s;
+}
+footer button:hover { transform: scale(1.3); color: #ff6fb2; }
+
+.post {
+  background:#fff;
+  margin:10px 0;
+  padding:12px;
+  border-radius:15px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.3s;
+}
+body.dark .post { background:#2a2a3f; }
+.post:hover { transform: scale(1.02); box-shadow:0 5px 15px rgba(0,0,0,0.2); }
+
+.post-actions { display:flex; justify-content:space-around; padding-top:8px; font-size:1.3em; }
+
+#adminPanel {
+  position:fixed;
+  top:0; left:0; right:0; bottom:0;
+  background:rgba(255,255,255,0.98);
+  display:none;
+  flex-direction:column;
+  padding:20px;
+  overflow-y:auto;
+  z-index:999;
+  transition: background 0.3s;
+}
+body.dark #adminPanel { background:rgba(30,30,40,0.95); color:#ffb6d1; }
+
+.hidden {display:none;}
+
+.ai-btn {
+  background: linear-gradient(90deg,#ff6fb2,#ff99cc);
+  border:none;
+  color:white;
+  padding:10px 15px;
+  border-radius:25px;
+  margin:10px 0;
+  font-size:1em;
+  cursor:pointer;
+  transition: 0.3s all;
+}
+.ai-btn:hover { background: linear-gradient(90deg,#ff99cc,#ff6fb2); }
+
+textarea { width:100%; border-radius:10px; padding:8px; margin-bottom:8px; }
+
+video { border-radius:10px; margin:10px 0; max-height:300px; width:100%; transition: transform 0.3s; }
+video:hover { transform: scale(1.02); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>رِقّة 💖</h1>
+  <span class="admin-btn" onclick="openAdmin()">❤️</span>
+</header>
+
+<input type="text" id="search" placeholder="ابحثي هنا يا رقيقة...">
+
+<main id="content">
+  <p style="text-align:center;font-weight:500;">✨ اختاري قسمك الجميل من الأسفل ✨</p>
+</main>
+
+<footer>
+  <button onclick="openSection('mashaer')">💞</button>
+  <button onclick="openSection('fiqh')">🌸</button>
+  <button onclick="openSection('relations')">💋</button>
+  <button onclick="openSection('health')">💗</button>
+  <button onclick="openSection('community')">🤍</button>
+</footer>
+
+<div id="adminPanel">
+  <h2>لوحة الأدمن 💼</h2>
+  <div id="loginArea">
+    <input id="adminUser" placeholder="اسم المستخدم">
+    <input id="adminPass" type="password" placeholder="كلمة السر">
+    <button class="ai-btn" onclick="loginAdmin()">دخول</button>
+  </div>
+
+  <div id="adminContent" class="hidden">
+    <h3>مرحباً يا رقيقة Zazo 🌸</h3>
+    <select id="adminSection">
+      <option value="mashaer">💞 المشاعر</option>
+      <option value="fiqh">🌸 فقه النساء</option>
+      <option value="relations">💋 العلاقات الحميمية</option>
+      <option value="health">💗 الصحة</option>
+      <option value="community">🤍 المجتمع</option>
+    </select>
+
+    <button class="ai-btn" onclick="generateAIContent()">✨ إنشاء محتوى بالذكاء الصناعي</button>
+
+    <textarea id="adminText" rows="5" placeholder="اكتبي البوح الجميل هنا..."></textarea>
+    <button class="ai-btn" onclick="addPost()">💌 إضافة بوح جميل</button>
+
+    <input type="file" id="videoUpload" accept="video/*" style="margin-top:10px;">
+    <button class="ai-btn" onclick="uploadVideo()">🎥 رفع فيديو</button>
+
+    <div id="adminPosts"></div>
+    <button class="ai-btn" style="background:#f88;" onclick="closeAdmin()">خروج</button>
+  </div>
+</div>
+
+<script>
+let currentSection = "";
+let isAdmin = false;
+
+// Dark Mode تلقائي
+if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
+  document.body.classList.add('dark');
+}
+
+// فتح قسم
+function openSection(section){
+  currentSection = section;
+  document.getElementById("content").innerHTML = "<p style='text-align:center;'>⏳ جارٍ تحميل المحتوى...</p>";
+  fetchPosts();
+  fetchVideos();
+}
+
+// جلب المشاركات
+async function fetchPosts() {
+  try {
+    const res = await fetch("/api/get_posts", {
+      method:"POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({section: currentSection})
+    });
+    const data = await res.json();
+    let html = data.posts.length ? data.posts.map(p => `
+      <div class="post">
+        ${p.text}
+        <div class="post-actions">
+          <span onclick="likePost('${p.id}')">❤️</span>
+          <span onclick="commentPost('${p.id}')">💭</span>
+          <span onclick="shareContent('${p.text}')">🔄</span>
+        </div>
+      </div>`).join("") : "<p style='text-align:center;'>لا يوجد بوح بعد 🌸</p>";
+    document.getElementById("content").innerHTML = html;
+  } catch(e){ document.getElementById("content").innerHTML = "<p style='text-align:center;color:red;'>⚠️ تعذر تحميل المشاركات</p>"; }
+}
+
+// جلب الفيديوهات
+async function fetchVideos() {
+  try {
+    const res = await fetch("/api/get_videos", {
+      method:"POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({section: currentSection})
+    });
+    const data = await res.json();
+    let html = data.videos.map(v => `<div class="post"><video src="${v.src}" controls></video></div>`).join("");
+    if(html) document.getElementById("content").innerHTML += html;
+  } catch(e){ console.error(e); }
+}
+
+// مشاركة المحتوى
+function shareContent(text){
+  if(navigator.share) navigator.share({text});
+  else { navigator.clipboard.writeText(text); alert("تم نسخ البوح الجميل 💖"); }
+}
+
+function likePost(id){ alert("❤️ أعجبك البوح!"); }
+function commentPost(id){ alert("💭 أضيف تعليق!"); }
+
+// لوحة الأدمن
+function openAdmin(){ document.getElementById("adminPanel").style.display="flex"; }
+function closeAdmin(){ document.getElementById("adminPanel").style.display="none"; }
+
+function loginAdmin(){
+  const u = document.getElementById("adminUser").value;
+  const p = document.getElementById("adminPass").value;
+  if(u==="zazo" && p==="zazo010988"){
+    isAdmin=true;
+    document.getElementById("loginArea").classList.add("hidden");
+    document.getElementById("adminContent").classList.remove("hidden");
+  } else alert("بيانات الدخول غير صحيحة 💔");
+}
+
+async function generateAIContent(){
+  const section = document.getElementById("adminSection").value;
+  try{
+    const res = await fetch("/api/ai/generate", {
+      method:"POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({section})
+    });
+    const data = await res.json();
+    document.getElementById("adminText").value = data.text || "💖 لم يصل رد من الخادم";
+  }catch(e){alert("⚠️ تعذر الاتصال بالخادم");}
+}
+
+async function addPost(){
+  if(!isAdmin) return alert("يجب تسجيل الدخول");
+  const section = document.getElementById("adminSection").value;
+  const txt = document.getElementById("adminText").value.trim();
+  if(!txt) return alert("أكتبي شيئًا جميلًا 🌷");
+  await fetch("/api/add_post", {
+    method:"POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({section, content: txt})
+  });
+  document.getElementById("adminText").value="";
+  openSection(currentSection);
+  alert("تمت إضافة البوح الجميل 💖");
+}
+
+function uploadVideo(){
+  if(!isAdmin) return alert("يجب تسجيل الدخول");
+  const file = document.getElementById("videoUpload").files[0];
+  if(!file) return alert("اختاري فيديو أولاً 🎥");
+  const section = document.getElementById("adminSection").value;
+  const form = new FormData();
+  form.append("file", file);
+  form.append("section", section);
+  fetch("/api/upload_video", {method:"POST", body: form})
+    .then(res => res.json())
+    .then(data => {
+      if(data.status==="success"){ openSection(currentSection); alert("تم رفع الفيديو 💗"); }
+      else alert(data.message);
+    });
+}
+</script>
+</body>
+</html>

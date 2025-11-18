@@ -1,0 +1,21 @@
+{
+  "name": "رِقّة النسائية",
+  "short_name": "رِقّة",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffe6f2",
+  "theme_color": "#c80064",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/static/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
